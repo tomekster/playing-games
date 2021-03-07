@@ -72,7 +72,7 @@ while True:
 			# Predict action Q-values from environment state
 			state_tensor = tf.convert_to_tensor(state)
 			state_tensor = tf.expand_dims(state_tensor, 0)
-			action_probs = model(statet_tensor, training=False)
+			action_probs = model(state_tensor, training=False)
 			# Take best action
 			action = tf.argmax(action_probs[0]).numpy()
 
