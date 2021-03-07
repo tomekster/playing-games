@@ -2,7 +2,7 @@
 from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 import numpy as np
 import tensorflow as tf
-from dqn import Model 
+from model import Model 
 from tensorflow import keras
 
 
@@ -139,6 +139,7 @@ while True:
 			# Log details
 			template = "running reward: {:.2f} at episode {}, frame count {}"
 			print(template.format(running_reward, episode_count, frame_count))
+			model.save('saved_model')
 
 		# Limit the state and reward history
 		if len(rewards_history) > max_memory_length:
