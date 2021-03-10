@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 from model import Model 
 from tensorflow import keras
-
+import argparse
 
 # Configuration params for the whole setup
 seed = 42
@@ -41,6 +41,17 @@ running_reward = 0
 episode_count = 0
 frame_count = 0
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--frame")
+parser.add_argument("--modelpath")
+args = parser.parse_args()
+
+if args.frame: frame_count = int(args.frame)
+if args.modelpath: 
+	model = keras.models.load_model(args.modelpath, compile=False)
+	print("Loaded model {}".format(args.modelpath))
+
+
 # Number of frames to take random action and observe output
 epsilon_random_frames = 50000
 # Number of framaes for exploration
@@ -60,7 +71,7 @@ while True:
 	episode_reward = 0
 
 	for timestep in range(1, max_steps_per_episode):
-		# env.render(); Adding this line would show the attempts 
+		# env.render() #Adding this line would show the attempts 
 		# of the agent in a pop up window
 		frame_count += 1
 
@@ -139,11 +150,11 @@ while True:
 			# Log details
 			template = "running reward: {:.2f} at episode {}, frame count {}"
 			print(template.format(running_reward, episode_count, frame_count))
-			model.save('saved_model')
+			model.save('saved_model_{}'.format(frame_count))
 
 		# Limit the state and reward history
 		if len(rewards_history) > max_memory_length:
-			del rewawrds_history[:1]
+			del rewards_history[:1]
 			del state_history[:1]
 			del state_next_history[:1]
 			del action_history[:1]
